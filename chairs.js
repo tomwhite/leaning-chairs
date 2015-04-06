@@ -4,7 +4,7 @@ function draw() {
     boundingbox: [minx, miny, maxx, maxy],
     keepAspectRatio: true,
     showCopyright: false,
-    showNavigation: true,
+    showNavigation: false,
     axis:true
   });  
 

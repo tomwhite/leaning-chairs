@@ -4,9 +4,115 @@
     <title>Stacking Chairs</title>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.96/jsxgraphcore.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
 
   <body>
+	<p>While on holiday, I noticed a stack of folding chairs in the apartment we were staying in. The chairs were all folded flat, and 
+		they were leaning against each other in such a way that the top of each chair was a little lower than the one to its left that it was leaning on.
+		</p>
+	<p>To illustrate, the leftmost chair was vertical, while the one to its right was leaning on it like this:</p>
+	<div id="box1" style="width:200px; height:200px;"></div>
+    <script type="text/javascript">
+  var minx = -0.1, maxx = 1.1, miny = 1.1, maxy = -0.1;  
+  var board = JXG.JSXGraph.initBoard('box1', {
+    boundingbox: [minx, miny, maxx, maxy],
+    keepAspectRatio: true,
+    showCopyright: false,
+    showNavigation: false,
+    axis:false
+  });
+  var d = 0.05
+  var N = 2
+  var xn = 0
+  var yn = 1
+
+  for (var i = 0; i < N; i++) {
+	var p = board.create('point',[xn, yn],{name:'', size:1, fixed:true});
+    board.create('line', [p, [xn + Math.sqrt(1 - yn * yn), 0]], {
+	  straightFirst:false,
+	  straightLast:false,
+	  strokeColor: 'black',
+      highlightStrokeColor: 'black'
+    })
+
+    xn = xn + d * (Math.sqrt(1 - yn * yn))
+    yn = yn * (1 - d)
+  }
+    </script>
+
+	<p>The third chair was leaning on the second like this:</p>
+	<div id="box2" style="width:200px; height:200px;"></div>
+    <script type="text/javascript">
+  var minx = -0.1, maxx = 1.1, miny = 1.1, maxy = -0.1;  
+  var board = JXG.JSXGraph.initBoard('box2', {
+    boundingbox: [minx, miny, maxx, maxy],
+    keepAspectRatio: true,
+    showCopyright: false,
+    showNavigation: false,
+    axis:false
+  });
+  var d = 0.05
+  var N = 3
+  var xn = 0
+  var yn = 1
+
+  for (var i = 0; i < N; i++) {
+	var p = board.create('point',[xn, yn],{name:'', size:1, fixed:true});
+    board.create('line', [p, [xn + Math.sqrt(1 - yn * yn), 0]], {
+	  straightFirst:false,
+	  straightLast:false,
+	  strokeColor: 'black',
+      highlightStrokeColor: 'black'
+    })
+
+    xn = xn + d * (Math.sqrt(1 - yn * yn))
+    yn = yn * (1 - d)
+  }
+    </script>
+
+    <p>This made me wonder: what is the shape of the curve described by the tops of the chairs (the red dots)? Assuming each chair touches the one to its left at a point that is a fixed distance from the top, the curve looks something like this:</p>
+
+	<div id="box3" style="width:200px; height:200px;"></div>
+    <script type="text/javascript">
+  var minx = -0.1, maxx = 1.1, miny = 1.1, maxy = -0.1;  
+  var board = JXG.JSXGraph.initBoard('box3', {
+    boundingbox: [minx, miny, maxx, maxy],
+    keepAspectRatio: true,
+    showCopyright: false,
+    showNavigation: false,
+    axis:false
+  });
+  var d = 0.05
+  var N = 30
+  var xn = 0
+  var yn = 1
+
+  for (var i = 0; i < N; i++) {
+	var p = board.create('point',[xn, yn],{name:'', size:1, fixed:true});
+    board.create('line', [p, [xn + Math.sqrt(1 - yn * yn), 0]], {
+	  straightFirst:false,
+	  straightLast:false,
+	  strokeColor: 'black',
+      highlightStrokeColor: 'black'
+    })
+
+    xn = xn + d * (Math.sqrt(1 - yn * yn))
+    yn = yn * (1 - d)
+  }
+    </script>
+
+    <p>For simplicity, assume that the chairs are all of length 1, and that \(\delta\) is the distance of the point from the top of the chair that the next chair rests on.
+    We can compute the coordinates of the tops of the chairs by using the recurrence relation:
+		$$x_{n+1} = x_n + \delta \sqrt{1 - y_n^2}$$
+		$$y_{n+1} = y_n - \delta y_n$$
+	</p>
+	<p>
+	with the initial condition (for the first chair):
+	$$x_0=0$$
+	$$y_0=1$$
+    </p>
+	
     <div id="box" style="width:750px; height:750px;"></div>
     <script type="text/javascript" src="chairs.js"></script> 
   </body>
