@@ -8,6 +8,7 @@
   </head>
 
   <body>
+	<h1>Leaning Chairs</h1>
 	<p>While on holiday, I noticed a stack of folding chairs in the apartment we were staying in. The chairs were all folded flat, and 
 		they were leaning against each other in such a way that the top of each chair was a little lower than the one to its left that it was leaning on.
 		</p>
@@ -102,8 +103,8 @@
   }
     </script>
 
-    <p>For simplicity, assume that the chairs are all of length 1, and that \(\epsilon\) is the distance of the point from the top of the chair that the next chair rests on.</p>
-    <p>To compute the top of the next chair from the previous one, consider the following diagram.</p>
+    <p>For simplicity, assume that the chairs are infinitely thin and all of length 1, and that \(\epsilon\) is the fixed distance of the point from the top of the chair that the next chair rests on.
+    To compute the top of the next chair from the previous one, consider the following diagram.</p>
 
 	<div id="box4" style="width:400px; height:400px;"></div>
     <script type="text/javascript">
@@ -204,7 +205,9 @@
     <div id="box" style="width:750px; height:750px;"></div>
     <script type="text/javascript" src="chairs.js"></script> 
 
-	<p>For large \(x\), \(y\) approaches 0, and the asymptotic behaviour is \(y = e^{-x}\). Intuitively, this means that the chairs never lie completely flat. At \(x=0\), the slope of the curve is vertical, while for \(e^{-x}\) it is \(-1\). This is shown in the following diagram:
+	<p>For large \(x\), \(y\) approaches 0, and the asymptotic behaviour is \(y = e^{-x}\). Intuitively, this means that the chairs never lie completely flat. At \(x=0\), the slope of the curve is vertical, while for \(e^{-x}\) it is \(-1\). Intuitively, this means that the top of the second chair is vertically below the first chair.</p>
+		
+	<p>The two curves are shown in the following diagram:</p>
 	
 	<div id="box5" style="width:1000px; height:200px;"></div>
     <script type="text/javascript">
