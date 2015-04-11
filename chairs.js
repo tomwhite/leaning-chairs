@@ -8,7 +8,7 @@ function draw() {
     axis:true
   });  
 
-  var d = 0.01
+  var eps = 0.01
   var N = 500
   var xn = 0
   var yn = 1
@@ -21,16 +21,16 @@ function draw() {
       highlightStrokeColor: 'black'
     })
 
-    xn = xn + d * (Math.sqrt(1 - yn * yn))
-    yn = yn * (1 - d)
+    xn = xn + eps * (Math.sqrt(1 - yn * yn))
+    yn = yn * (1 - eps)
   }
 
   board.create('curve', [
-      function(t) { return Math.log(Math.sqrt(1 - t*t) + 1) - Math.sqrt(1 - t*t) - Math.log(t); },
+      function(t) { return Math.log(1 + Math.sqrt(1 - t*t)) - Math.sqrt(1 - t*t) - Math.log(t); },
 	  function(t) { return t; }, 0, 1], {
 	strokewidth: 4,
-	strokeColor: 'blue',
-	highlightStrokeColor: 'blue'
+	strokeColor: 'red',
+	highlightStrokeColor: 'red'
   });
 }
 

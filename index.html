@@ -1,7 +1,7 @@
 <html>
 
   <head>
-    <title>Stacking Chairs</title>
+    <title>Leaning Chairs</title>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jsxgraph/0.96/jsxgraphcore.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -11,7 +11,7 @@
 	<p>While on holiday, I noticed a stack of folding chairs in the apartment we were staying in. The chairs were all folded flat, and 
 		they were leaning against each other in such a way that the top of each chair was a little lower than the one to its left that it was leaning on.
 		</p>
-	<p>To illustrate, the leftmost chair was vertical, while the one to its right was leaning on it like this:</p>
+	<p>To illustrate for two chairs, the leftmost chair was vertical, while the one to its right was leaning on it like this:</p>
 	<div id="box1" style="width:200px; height:200px;"></div>
     <script type="text/javascript">
   var minx = -0.1, maxx = 1.1, miny = 1.1, maxy = -0.1;  
@@ -22,7 +22,7 @@
     showNavigation: false,
     axis:false
   });
-  var d = 0.05
+  var eps = 0.05
   var N = 2
   var xn = 0
   var yn = 1
@@ -36,8 +36,8 @@
       highlightStrokeColor: 'black'
     })
 
-    xn = xn + d * (Math.sqrt(1 - yn * yn))
-    yn = yn * (1 - d)
+    xn = xn + eps * (Math.sqrt(1 - yn * yn))
+    yn = yn * (1 - eps)
   }
     </script>
 
@@ -52,7 +52,7 @@
     showNavigation: false,
     axis:false
   });
-  var d = 0.05
+  var eps = 0.05
   var N = 3
   var xn = 0
   var yn = 1
@@ -66,16 +66,16 @@
       highlightStrokeColor: 'black'
     })
 
-    xn = xn + d * (Math.sqrt(1 - yn * yn))
-    yn = yn * (1 - d)
+    xn = xn + eps * (Math.sqrt(1 - yn * yn))
+    yn = yn * (1 - eps)
   }
     </script>
 
     <p>This made me wonder: what is the shape of the curve described by the tops of the chairs (the red dots)? Assuming each chair touches the one to its left at a point that is a fixed distance from the top, the curve looks something like this:</p>
 
-	<div id="box3" style="width:200px; height:200px;"></div>
+	<div id="box3" style="width:400px; height:200px;"></div>
     <script type="text/javascript">
-  var minx = -0.1, maxx = 1.1, miny = 1.1, maxy = -0.1;  
+  var minx = -0.1, maxx = 2.1, miny = 1.1, maxy = -0.1;  
   var board = JXG.JSXGraph.initBoard('box3', {
     boundingbox: [minx, miny, maxx, maxy],
     keepAspectRatio: true,
@@ -83,7 +83,7 @@
     showNavigation: false,
     axis:false
   });
-  var d = 0.05
+  var eps = 0.05
   var N = 30
   var xn = 0
   var yn = 1
@@ -97,24 +97,141 @@
       highlightStrokeColor: 'black'
     })
 
-    xn = xn + d * (Math.sqrt(1 - yn * yn))
-    yn = yn * (1 - d)
+    xn = xn + eps * (Math.sqrt(1 - yn * yn))
+    yn = yn * (1 - eps)
   }
     </script>
 
-    <p>For simplicity, assume that the chairs are all of length 1, and that \(\delta\) is the distance of the point from the top of the chair that the next chair rests on.
-    We can compute the coordinates of the tops of the chairs by using the recurrence relation:
-		$$x_{n+1} = x_n + \delta \sqrt{1 - y_n^2}$$
-		$$y_{n+1} = y_n - \delta y_n$$
+    <p>For simplicity, assume that the chairs are all of length 1, and that \(\epsilon\) is the distance of the point from the top of the chair that the next chair rests on.</p>
+    <p>To compute the top of the next chair from the previous one, consider the following diagram.</p>
+
+	<div id="box4" style="width:400px; height:400px;"></div>
+    <script type="text/javascript">
+  var minx = -0.1, maxx = 1.1, miny = 1.1, maxy = -0.1;  
+  var board = JXG.JSXGraph.initBoard('box4', {
+    boundingbox: [minx, miny, maxx, maxy],
+    keepAspectRatio: true,
+    showCopyright: false,
+    showNavigation: false,
+    axis:false
+  });
+  var eps = 0.2
+  var N = 3
+  var x0 = 0
+  var y0 = 1
+  var x1 = x0 + eps * (Math.sqrt(1 - y0 * y0))
+  var y1 = y0 * (1 - eps)
+  var x2 = x1 + eps * (Math.sqrt(1 - y1 * y1))
+  var y2 = y1 * (1 - eps)
+
+  var O = board.create('point',[x1, y1],{name:'O (x_n, y_n)', size:1, fixed:true});
+  var A = board.create('point',[0, 0],{name:"A", size:0, fixed:true});
+  var B = board.create('point',[x1 + Math.sqrt(1 - y1 * y1), 0],{name:"B", size:0, fixed:true});
+  var Bprime = board.create('point',[x2, y2],{name:"B' (x_{n+1}, y_{n+1})", size:1, fixed:true});
+  var Aprime = board.create('point',[0, y2],{name:"A'", size:0, fixed:true});
+  var Bprime = board.create('point',[x2, y2],{name:"B' (x_{n+1}, y_{n+1})", size:1, fixed:true});
+  board.create('line', [O, [x1 + Math.sqrt(1 - y1 * y1), 0]], {
+    straightFirst:false,
+	straightLast:false,
+	strokeColor: 'black',
+    highlightStrokeColor: 'black'
+  })
+  board.create('line', [Bprime, [x2 + Math.sqrt(1 - y2 * y2), 0]], {
+    straightFirst:false,
+	straightLast:false,
+	strokeColor: 'lightgray',
+    highlightStrokeColor: 'lightgray'
+  })
+  board.create('line', [O, A], {
+    straightFirst:false,
+	straightLast:false,
+	strokeWidth: 0.75,
+	strokeColor: 'black',
+    highlightStrokeColor: 'black'
+  })
+  board.create('line', [A, B], {
+    straightFirst:false,
+	straightLast:false,
+	strokeWidth: 0.75,
+	strokeColor: 'black',
+    highlightStrokeColor: 'black'
+  })
+  board.create('line', [Aprime, Bprime], {
+    straightFirst:false,
+	straightLast:false,
+	strokeWidth: 0.4,
+	strokeColor: 'black',
+    highlightStrokeColor: 'black',
+    dash: 2
+  })
+  board.create('text', [0.1, 0.75, '&epsilon;']);
+  board.create('text', [-0.05, 0.4, 'y_n']);
+  board.create('text', [0.25, -0.05, 'a_n']);
+  board.create('text', [0.25, 0.4, '1']);
+    </script>
+
+    <p>Looking at similar triangles OAB and OA'B',
+		$$x_{n+1} = x_n + \epsilon a_n$$
+		$$y_{n+1} = y_n - \epsilon y_n$$
+	</p>
+
+    <p>Then using Pythagoras' theorem, \(y_n^2 + a_n^2 = 1\), we obtain the following recurrence relation,
+		$$x_{n+1} = x_n + \epsilon \sqrt{1 - y_n^2}$$
+		$$y_{n+1} = y_n - \epsilon y_n$$
 	</p>
 	<p>
 	with the initial condition (for the first chair):
 	$$x_0=0$$
 	$$y_0=1$$
     </p>
+    <p>Rewriting, we get
+		$$\begin{align}\frac{y_{n+1} - y_n}{x_{n+1} - x_n} = -\frac{\epsilon y_n}{\epsilon \sqrt{1 - y_n^2}} \\
+		   = -\frac{y_n}{\sqrt{1 - y_n^2}}\end{align}$$
+	</p>
+    <p>In the limit as \(\epsilon \to 0\), this becomes
+		$$\frac{dy}{dx} = -\frac{y}{\sqrt{1 - y^2}}$$
+	</p>
+	<p>with
+    $$y(0)=1$$
+    </p>
+
+	<p>Using <a href="https://www.wolframalpha.com/input/?i=y%27+%3D+-y%2Fsqrt%281-y%5E2%29">Wolfram Alpha to help solve the differential equation<a>, we find that the closed-form equation for the curve is
+		$$x = \log{\left(1 + \sqrt{1 - y^2}\right)} - \sqrt{1 - y^2} - \log y$$
+	</p>
+	
+	<p>The following diagram provides a visual confirmation of this equation. The chairs are plotted with a small \(\epsilon\) (0.01), and the red curve is the closed-form equation.</p>
 	
     <div id="box" style="width:750px; height:750px;"></div>
     <script type="text/javascript" src="chairs.js"></script> 
+
+	<p>For large \(x\), \(y\) approaches 0, and the asymptotic behaviour is \(y = e^{-x}\). Intuitively, this means that the chairs never lie completely flat. At \(x=0\), the slope of the curve is vertical, while for \(e^{-x}\) it is \(-1\). This is shown in the following diagram:
+	
+	<div id="box5" style="width:1000px; height:200px;"></div>
+    <script type="text/javascript">
+  var minx = 0, maxx = 5, miny = 1, maxy = 0;  
+  var board = JXG.JSXGraph.initBoard('box5', {
+    boundingbox: [minx, miny, maxx, maxy],
+    keepAspectRatio: true,
+    showCopyright: false,
+    showNavigation: false,
+    axis:true
+  });
+  board.create('curve', [
+      function(t) { return Math.log(1 + Math.sqrt(1 - t*t)) - Math.sqrt(1 - t*t) - Math.log(t); },
+	  function(t) { return t; }, 0, 1], {
+	strokeWidth: 1,
+	strokeColor: 'red',
+	highlightStrokeColor: 'red'
+  });
+  board.create('curve', [
+      function(t) { return - Math.log(t); },
+	  function(t) { return t; }, 0, 1], {
+	strokeWidth: 1,
+	strokeColor: 'blue',
+	highlightStrokeColor: 'blue'
+  });
+    </script>
+
   </body>
 
 </html>
